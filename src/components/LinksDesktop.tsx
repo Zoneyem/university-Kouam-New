@@ -7,10 +7,10 @@ const LinksDesktop = () => {
   const [openMenus, setOpenMenus] = useState<{ [key: string]: boolean }>({});
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const toggleMenu = (path: string) => {
+  const toggleMenu = (path: string, isOpen: boolean) => {
     setOpenMenus((prev) => ({
       ...prev,
-      [path]: !prev[path],
+      [path]: isOpen,
     }));
   };
 
@@ -27,15 +27,27 @@ const LinksDesktop = () => {
 
   const renderSubLinks = (subLinks: Link[], parentPath: string) => {
     return (
-      <div className="absolute top-full left-0 mt-0 w-48 bg-white shadow-lg border rounded z-50 transition-transform transition-opacity duration-200 transform scale-95 opacity-0 animate-scaleIn">
+      <div
+        className={`absolute top-full left-0 mt-0 w-48 bg-white shadow-lg border rounded z-50 
+        transition-all duration-200 ease-in-out 
+        ${
+          openMenus[parentPath]
+            ? "opacity-100 scale-100 visible"
+            : "opacity-0 scale-95 invisible"
+        }`}
+      >
         {subLinks.map(({ ref, label, subLinks: childSubLinks }) => {
           const fullPath = parentPath + ref;
 
           return (
-            <div key={fullPath} className="relative">
+            <div
+              key={fullPath}
+              className="relative"
+              onMouseEnter={() => toggleMenu(fullPath, true)}
+              onMouseLeave={() => toggleMenu(fullPath, false)}
+            >
               {childSubLinks ? (
                 <button
-                  onClick={() => toggleMenu(fullPath)}
                   className="w-full text-left px-4 py-2 flex justify-between items-center hover:bg-gray-100 capitalize"
                   aria-expanded={!!openMenus[fullPath]}
                   aria-haspopup="menu"
@@ -62,9 +74,16 @@ const LinksDesktop = () => {
                 </NavLink>
               )}
 
-              {/* Render nested subLinks if open */}
-              {childSubLinks && openMenus[fullPath] && (
-                <div className="absolute top-0 left-full mt-0 ml-0 w-48 bg-white shadow-lg border rounded z-50 transition-transform transition-opacity duration-200 transform scale-95 opacity-0 animate-scaleIn">
+              {childSubLinks && (
+                <div
+                  className={`absolute top-0 left-full mt-0 ml-0 w-48 bg-white shadow-lg border rounded z-50 
+                  transition-all duration-200 ease-in-out 
+                  ${
+                    openMenus[fullPath]
+                      ? "opacity-100 scale-100 visible"
+                      : "opacity-0 scale-95 invisible"
+                  }`}
+                >
                   {renderSubLinks(childSubLinks, fullPath)}
                 </div>
               )}
@@ -81,10 +100,14 @@ const LinksDesktop = () => {
       className="hidden w-full lg:flex gap-x-[5rem] justify-center items-center relative"
     >
       {links.map(({ ref, label, subLinks }) => (
-        <div key={ref} className="relative">
+        <div
+          key={ref}
+          className="relative"
+          onMouseEnter={() => toggleMenu(ref, true)}
+          onMouseLeave={() => toggleMenu(ref, false)}
+        >
           {subLinks ? (
             <button
-              onClick={() => toggleMenu(ref)}
               className="capitalize tracking-wide flex items-center gap-1"
               aria-expanded={!!openMenus[ref]}
               aria-haspopup="menu"
@@ -110,9 +133,15 @@ const LinksDesktop = () => {
             </NavLink>
           )}
 
-          {/* First-level submenu */}
-          {subLinks && openMenus[ref] && (
-            <div className="absolute top-full left-0 mt-0 w-48 transition-transform transition-opacity duration-200 transform scale-95 opacity-0 animate-scaleIn">
+          {subLinks && (
+            <div
+              className={`absolute top-full left-0 mt-0 w-48 transition-all duration-200 ease-in-out 
+              ${
+                openMenus[ref]
+                  ? "opacity-100 scale-100 visible"
+                  : "opacity-0 scale-95 invisible"
+              }`}
+            >
               {renderSubLinks(subLinks, ref)}
             </div>
           )}
