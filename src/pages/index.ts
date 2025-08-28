@@ -1,1 +1,9 @@
-export { default as HomeLayout} from "./HomeLayout";
+export { default as HomeLayout } from "./HomeLayout";
+export { default as Landing } from "./Landing";
+export { default as Formations } from "./Formations";
+export { default as Parcours } from "./Parcours";
+export { default as Apropos } from "./Apropos";
+export { default as Inscriptions } from "./Inscriptions";
+export { default as Bourses } from "./Bourses";
+export { default as PortesOuvertes } from "./PortesOuvertes";
+export { default as Contact } from "./Contact";

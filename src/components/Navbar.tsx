@@ -1,8 +1,15 @@
+import LinksDesktop from "./LinksDesktop";
+import LinksMobile from "./LinksMobile";
 
 const Navbar = () => {
   return (
-    <div>Navbar</div>
-  )
-}
+    <nav>
+      <div className="align-element">
+        <LinksMobile />
+        <LinksDesktop />
+      </div>
+    </nav>
+  );
+};
 
-export default Navbar
+export default Navbar;

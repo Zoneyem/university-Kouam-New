@@ -133,5 +133,7 @@ body{
 }
 
 @layer components {
-  
+  .test{
+    @apply border-solid border-2 
+  }
 }
