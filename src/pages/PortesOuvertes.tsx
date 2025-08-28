@@ -1,7 +1,7 @@
 
 const PortesOuvertes = () => {
   return (
-    <div>PortesOuvertes</div>
+    <div>Portes Ouvertes</div>
   )
 }
 
