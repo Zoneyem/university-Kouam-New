@@ -1,5 +1,6 @@
-import { links, type Link } from "@/utils/links"
-import { NavLink } from "react-router-dom"
+import { formations } from "@/utils/formation";
+import { links, type Link } from "@/utils/links";
+import { NavLink } from "react-router-dom";
 
 
 const LinksDesktop = () => {
