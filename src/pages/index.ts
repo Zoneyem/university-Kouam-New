@@ -13,3 +13,6 @@ export { default as LicencePro } from "./LicencePro";
 export { default as BachelorDegree } from "./BachelorDegree";
 export { default as MasterPro } from "./MasterPro";
 export { default as MasterDegree } from "./MasterDegree";
+export { default as GestionPage } from "./GestionPage";
+export { default as IndustrielPage } from "./IndustrielPage";
+export { default as SantePage } from "./SantePage";

@@ -8,8 +8,10 @@ import {
   BtsPage,
   Contact,
   Formations,
+  GestionPage,
   HndPage,
   HomeLayout,
+  IndustrielPage,
   Inscriptions,
   Landing,
   LicencePro,
@@ -17,6 +19,7 @@ import {
   MasterPro,
   Parcours,
   PortesOuvertes,
+  SantePage,
 } from "./pages";
 
 const router = createBrowserRouter([
@@ -28,13 +31,62 @@ const router = createBrowserRouter([
       {
         path: "formations",
         element: <Formations />,
+        // ["gestion", "industriel", "santé"]
         children: [
-          { path: "bts", element: <BtsPage /> },
-          { path: "hnd", element: <HndPage /> },
-          { path: "licence-pro", element: <LicencePro /> },
-          { path: "bachelor", element: <BachelorDegree /> },
-          { path: "master-pro", element: <MasterPro /> },
-          { path: "master-degree", element: <MasterDegree /> },
+          {
+            path: "bts",
+            element: <BtsPage />,
+            children: [
+              { path: "gestion", element: <GestionPage /> },
+              { path: "industriel", element: <IndustrielPage /> },
+              { path: "sante", element: <SantePage /> },
+            ],
+          },
+          {
+            path: "hnd",
+            element: <HndPage />,
+            children: [
+              { path: "gestion", element: <GestionPage /> },
+              { path: "industriel", element: <IndustrielPage /> },
+              { path: "sante", element: <SantePage /> },
+            ],
+          },
+          {
+            path: "licence-pro",
+            element: <LicencePro />,
+            children: [
+              { path: "gestion", element: <GestionPage /> },
+              { path: "industriel", element: <IndustrielPage /> },
+              { path: "sante", element: <SantePage /> },
+            ],
+          },
+          {
+            path: "bachelor",
+            element: <BachelorDegree />,
+            children: [
+              { path: "gestion", element: <GestionPage /> },
+              { path: "industriel", element: <IndustrielPage /> },
+              { path: "sante", element: <SantePage /> },
+            ],
+          },
+          {
+            path: "master-pro",
+            element: <MasterPro />,
+            children: [
+              { path: "gestion", element: <GestionPage /> },
+              { path: "industriel", element: <IndustrielPage /> },
+              { path: "sante", element: <SantePage /> },
+            ],
+          },
+          {
+            path: "master-degree",
+            element: <MasterDegree />,
+            children: [
+              { path: "gestion", element: <GestionPage /> },
+              { path: "industriel", element: <IndustrielPage /> },
+              { path: "sante", element: <SantePage /> },
+            ],
+          },
         ],
       },
       { path: "parcours", element: <Parcours /> },

@@ -1,12 +1,12 @@
 import { Outlet } from "react-router-dom";
 
-const HndPage = () => {
+const IndustrielPage = () => {
   return (
     <div>
-      HndPage
+      IndustrielPage
       <Outlet /> {/* C'est ici que les pages enfants apparaissent */}
     </div>
   );
 }
 
-export default HndPage
+export default IndustrielPage
