@@ -64,18 +64,29 @@ const ContactForm = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
     reset,
-    watch,
   } = useForm<ContactFormInputs>();
+
+  const formValues = watch(); // Watch all fields
+
+  // Button is enabled only if all fields are filled & no errors
+  const isFormValid =
+    formValues.name?.trim() &&
+    formValues.email?.trim() &&
+    formValues.phone?.trim() &&
+    formValues.subject?.trim() &&
+    formValues.message?.trim() &&
+    Object.keys(errors).length === 0;
 
   const onSubmit: SubmitHandler<ContactFormInputs> = async (data) => {
     const [filiere, parcours] = data.subject.split(" - ");
 
     try {
       await emailjs.send(
-        "service_qk9gqad", // Remplace par ton Service ID
-        "template_imi38aj", // Remplace par ton Template ID
+        "service_qk9gqad", // Replace with your Service ID
+        "template_imi38aj", // Replace with your Template ID
         {
           name: data.name,
           email: data.email,
@@ -85,7 +96,7 @@ const ContactForm = () => {
           parcours: parcours ?? "",
           message: data.message,
         },
-        "f2Bl4eR-rdXz8O_Ra" // Remplace par ta Public Key
+        "f2Bl4eR-rdXz8O_Ra" // Replace with your Public Key
       );
 
       reset();
@@ -204,9 +215,9 @@ const ContactForm = () => {
             )}
 
             {/* Affichage dynamique du parcours choisi */}
-            {watch("subject") && (
+            {formValues.subject && (
               <p className="text-primary text-sm mt-1 animate-pulse">
-                Parcours sélectionné: {watch("subject")}
+                Parcours sélectionné: {formValues.subject}
               </p>
             )}
           </div>
@@ -232,8 +243,12 @@ const ContactForm = () => {
           <div className="text-center">
             <button
               type="submit"
-              disabled={isSubmitting}
-              className="bg-primary text-white px-8 py-3 rounded-full hover:scale-105 transition-transform duration-200"
+              disabled={!isFormValid || isSubmitting}
+              className={`px-8 py-3 rounded-full transition-transform duration-200 ${
+                isFormValid
+                  ? "bg-primary text-white hover:scale-105"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
             >
               {isSubmitting ? "Envoi..." : "Envoyer"}
             </button>

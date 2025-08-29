@@ -4,7 +4,10 @@ import { NavLink } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 
 const LinksDesktop = () => {
+  // Etat pour savoir quel menu est ouvert
   const [openMenus, setOpenMenus] = useState<{ [key: string]: boolean }>({});
+
+  // Référence pour détecter clics à l'extérieur
   const menuRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = (path: string, isOpen: boolean) => {
@@ -14,7 +17,7 @@ const LinksDesktop = () => {
     }));
   };
 
-  // Close menus on outside click
+  // Fermer les menus si clic en dehors
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -25,12 +28,11 @@ const LinksDesktop = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Fonction récursive pour afficher les sous-menus
   const renderSubLinks = (subLinks: Link[], parentPath: string) => {
     return (
       <div
-        className={`absolute top-full left-0 mt-0 w-48 bg-white shadow-lg border rounded z-50 
-        transition-all duration-200 ease-in-out 
-        ${
+        className={`absolute top-full left-0 mt-0 w-48 bg-white shadow-lg border rounded z-50 transition-all duration-200 ease-in-out ${
           openMenus[parentPath]
             ? "opacity-100 scale-100 visible"
             : "opacity-0 scale-95 invisible"
@@ -38,7 +40,6 @@ const LinksDesktop = () => {
       >
         {subLinks.map(({ ref, label, subLinks: childSubLinks }) => {
           const fullPath = parentPath + ref;
-
           return (
             <div
               key={fullPath}
@@ -48,7 +49,7 @@ const LinksDesktop = () => {
             >
               {childSubLinks ? (
                 <button
-                  className="w-full text-left px-4 py-2 flex justify-between items-center hover:bg-gray-100 capitalize"
+                  className="w-full text-left px-4 py-2 flex justify-between items-center hover:bg-gray-100 capitalize text-[clamp(0.8rem,1.5vw,1rem)]"
                   aria-expanded={!!openMenus[fullPath]}
                   aria-haspopup="menu"
                 >
@@ -64,7 +65,7 @@ const LinksDesktop = () => {
                 <NavLink
                   to={fullPath}
                   className={({ isActive }) =>
-                    `block px-4 py-2 hover:bg-gray-100 capitalize ${
+                    `block px-4 py-2 hover:bg-gray-100 capitalize text-[clamp(0.8rem,1.5vw,1rem)] ${
                       isActive ? "underline text-lg" : ""
                     }`
                   }
@@ -74,19 +75,7 @@ const LinksDesktop = () => {
                 </NavLink>
               )}
 
-              {childSubLinks && (
-                <div
-                  className={`absolute top-0 left-full mt-0 ml-0 w-48 bg-white shadow-lg border rounded z-50 
-                  transition-all duration-200 ease-in-out 
-                  ${
-                    openMenus[fullPath]
-                      ? "opacity-100 scale-100 visible"
-                      : "opacity-0 scale-95 invisible"
-                  }`}
-                >
-                  {renderSubLinks(childSubLinks, fullPath)}
-                </div>
-              )}
+              {childSubLinks && renderSubLinks(childSubLinks, fullPath)}
             </div>
           );
         })}
@@ -97,7 +86,7 @@ const LinksDesktop = () => {
   return (
     <div
       ref={menuRef}
-      className="hidden w-full lg:flex gap-x-[5rem] justify-center items-center relative"
+      className="hidden w-full lg:flex flex-wrap justify-center items-center gap-8 relative"
     >
       {links.map(({ ref, label, subLinks }) => (
         <div
@@ -108,7 +97,7 @@ const LinksDesktop = () => {
         >
           {subLinks ? (
             <button
-              className="capitalize tracking-wide flex items-center gap-1"
+              className="capitalize tracking-wide flex items-center gap-1 text-[clamp(0.9rem,2vw,1.1rem)]"
               aria-expanded={!!openMenus[ref]}
               aria-haspopup="menu"
             >
@@ -124,8 +113,8 @@ const LinksDesktop = () => {
             <NavLink
               to={ref}
               className={({ isActive }) =>
-                `capitalize tracking-wide ${
-                  isActive ? "underline text-xl" : ""
+                `capitalize tracking-wide text-[clamp(0.9rem,2vw,1.1rem)] ${
+                  isActive ? "underline text-lg" : ""
                 }`
               }
             >
@@ -133,18 +122,7 @@ const LinksDesktop = () => {
             </NavLink>
           )}
 
-          {subLinks && (
-            <div
-              className={`absolute top-full left-0 mt-0 w-48 transition-all duration-200 ease-in-out 
-              ${
-                openMenus[ref]
-                  ? "opacity-100 scale-100 visible"
-                  : "opacity-0 scale-95 invisible"
-              }`}
-            >
-              {renderSubLinks(subLinks, ref)}
-            </div>
-          )}
+          {subLinks && renderSubLinks(subLinks, ref)}
         </div>
       ))}
     </div>
