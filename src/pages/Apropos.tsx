@@ -157,7 +157,7 @@ const Apropos: React.FC = () => {
                   alt={item.title}
                   className="w-full h-full object-cover rounded-3xl"
                 />
-                <div className="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-center px-6 rounded-3xl">
+                <div className=" inset-0 bg-black/50 flex flex-col justify-center items-center text-center px-6 rounded-3xl">
                   <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
                     {item.title}
                   </h2>
