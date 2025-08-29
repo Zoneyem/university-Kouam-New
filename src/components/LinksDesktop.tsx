@@ -4,20 +4,13 @@ import { NavLink } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 
 const LinksDesktop = () => {
-  // Etat pour savoir quel menu est ouvert
   const [openMenus, setOpenMenus] = useState<{ [key: string]: boolean }>({});
-
-  // Référence pour détecter clics à l'extérieur
   const menuRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = (path: string, isOpen: boolean) => {
-    setOpenMenus((prev) => ({
-      ...prev,
-      [path]: isOpen,
-    }));
+    setOpenMenus((prev) => ({ ...prev, [path]: isOpen }));
   };
 
-  // Fermer les menus si clic en dehors
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -28,15 +21,24 @@ const LinksDesktop = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Fonction récursive pour afficher les sous-menus
-  const renderSubLinks = (subLinks: Link[], parentPath: string) => {
+  // Render submenus recursively
+  const renderSubLinks = (
+    subLinks: Link[],
+    parentPath: string,
+    isNested = false
+  ) => {
     return (
       <div
-        className={`absolute top-full left-0 mt-0 w-48 bg-white shadow-lg border rounded z-50 transition-all duration-200 ease-in-out ${
-          openMenus[parentPath]
-            ? "opacity-100 scale-100 visible"
-            : "opacity-0 scale-95 invisible"
-        }`}
+        className={`absolute ${
+          isNested ? "left-full top-0 ml-1" : "top-full left-0 mt-1"
+        } 
+          w-48 bg-gray-900 text-yellow-200 shadow-lg border border-gray-700 rounded z-50 transition-all duration-200 ease-in-out
+          ${
+            openMenus[parentPath]
+              ? "opacity-100 scale-100 visible"
+              : "opacity-0 scale-95 invisible"
+          }
+        `}
       >
         {subLinks.map(({ ref, label, subLinks: childSubLinks }) => {
           const fullPath = parentPath + ref;
@@ -49,7 +51,7 @@ const LinksDesktop = () => {
             >
               {childSubLinks ? (
                 <button
-                  className="w-full text-left px-4 py-2 flex justify-between items-center hover:bg-gray-100 capitalize text-[clamp(0.8rem,1.5vw,1rem)]"
+                  className="w-full text-left px-4 py-2 flex justify-between items-center hover:bg-blue-500 hover:text-white capitalize text-[clamp(0.8rem,1.5vw,1rem)] transition-colors"
                   aria-expanded={!!openMenus[fullPath]}
                   aria-haspopup="menu"
                 >
@@ -57,7 +59,7 @@ const LinksDesktop = () => {
                   <ChevronDown
                     size={16}
                     className={`transition-transform duration-200 ${
-                      openMenus[fullPath] ? "rotate-180" : "rotate-0"
+                      openMenus[fullPath] ? "rotate-90" : "rotate-0"
                     }`}
                   />
                 </button>
@@ -65,8 +67,10 @@ const LinksDesktop = () => {
                 <NavLink
                   to={fullPath}
                   className={({ isActive }) =>
-                    `block px-4 py-2 hover:bg-gray-100 capitalize text-[clamp(0.8rem,1.5vw,1rem)] ${
-                      isActive ? "underline text-lg" : ""
+                    `block px-4 py-2 capitalize text-[clamp(0.8rem,1.5vw,1rem)] transition-colors hover:bg-blue-500 hover:text-white ${
+                      isActive
+                        ? "underline text-lg text-blue-400"
+                        : "text-yellow-200"
                     }`
                   }
                   onClick={() => setOpenMenus({})}
@@ -74,8 +78,7 @@ const LinksDesktop = () => {
                   {label}
                 </NavLink>
               )}
-
-              {childSubLinks && renderSubLinks(childSubLinks, fullPath)}
+              {childSubLinks && renderSubLinks(childSubLinks, fullPath, true)}
             </div>
           );
         })}
@@ -86,7 +89,7 @@ const LinksDesktop = () => {
   return (
     <div
       ref={menuRef}
-      className="hidden w-full lg:flex flex-wrap justify-center items-center gap-8 relative"
+      className="hidden w-full lg:flex flex-wrap justify-center items-center gap-8 relative bg-gray-900 p-2 rounded"
     >
       {links.map(({ ref, label, subLinks }) => (
         <div
@@ -97,7 +100,7 @@ const LinksDesktop = () => {
         >
           {subLinks ? (
             <button
-              className="capitalize tracking-wide flex items-center gap-1 text-[clamp(0.9rem,2vw,1.1rem)]"
+              className="capitalize tracking-wide flex items-center gap-1 text-[clamp(0.9rem,2vw,1.1rem)] text-yellow-200 hover:text-blue-400 transition-colors"
               aria-expanded={!!openMenus[ref]}
               aria-haspopup="menu"
             >
@@ -105,7 +108,7 @@ const LinksDesktop = () => {
               <ChevronDown
                 size={16}
                 className={`transition-transform duration-200 ${
-                  openMenus[ref] ? "rotate-180" : "rotate-0"
+                  openMenus[ref] ? "rotate-90" : "rotate-0"
                 }`}
               />
             </button>
@@ -113,15 +116,16 @@ const LinksDesktop = () => {
             <NavLink
               to={ref}
               className={({ isActive }) =>
-                `capitalize tracking-wide text-[clamp(0.9rem,2vw,1.1rem)] ${
-                  isActive ? "underline text-lg" : ""
+                `capitalize tracking-wide text-[clamp(0.9rem,2vw,1.1rem)] transition-colors ${
+                  isActive
+                    ? "underline text-lg text-blue-400"
+                    : "text-yellow-200 hover:text-blue-400"
                 }`
               }
             >
               {label}
             </NavLink>
           )}
-
           {subLinks && renderSubLinks(subLinks, ref)}
         </div>
       ))}

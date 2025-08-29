@@ -1,5 +1,19 @@
 import React, { useRef, useState } from "react";
 import spotVideo from "../assets/videos/spot.mp4";
+
+// 🔹 Ajoute ici tes images locales
+import hnd from "../assets/images/hnd.jpeg";
+import licence from "../assets/images/licence.jpeg";
+import master from "../assets/images/master.jpeg";
+
+import louvin from "../assets/images/louvin.jpg";
+import dschang from "../assets/images/uni_dschang.jpg";
+import bruxelles from "../assets/images/uni-bruxelles.jpg";
+
+import staffKouam from "../assets/images/kouam_mme.jpeg";
+import staffNjoya from "../assets/images/kouam_m.jpeg";
+import staffTchatchoua from "../assets/images/binam.jpeg";
+
 import {
   Carousel,
   CarouselContent,
@@ -9,7 +23,7 @@ import {
 } from "@/components/ui/carousel";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-// Éléments du carousel
+// === CAROUSEL ===
 const carouselItems = [
   {
     title: "Excellence Académique",
@@ -85,7 +99,6 @@ const Apropos: React.FC = () => {
                   alt={item.title}
                   className="w-full h-full object-cover rounded-3xl"
                 />
-                {/* Texte centré */}
                 <div className="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-center px-6 rounded-3xl">
                   <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
                     {item.title}
@@ -162,10 +175,7 @@ const Apropos: React.FC = () => {
           L’Institut Supérieur des Sciences et Technologies Kouam (ISSTEK) est
           un établissement d’enseignement supérieur dont la mission est de
           former des leaders compétents, innovants et responsables dans les
-          domaines scientifiques et technologiques. À travers des formations de
-          qualité, des infrastructures modernes et une pédagogie centrée sur
-          l’étudiant, ISSTEK accompagne ses apprenants vers l’excellence et
-          l’insertion professionnelle.
+          domaines scientifiques et technologiques.
         </p>
       </section>
 
@@ -175,17 +185,23 @@ const Apropos: React.FC = () => {
           Cycles de Formations
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {["Licence", "Master", "Doctorat"].map((cycle, idx) => (
+          {[
+            { name: "HND / BTS", img: hnd },
+            { name: "Licence / Licence Pro", img: licence },
+            { name: "Master / Master Pro", img: master },
+          ].map((cycle, idx) => (
             <Card
               key={idx}
-              className="shadow-lg rounded-2xl overflow-hidden hover:shadow-xl transition-shadow"
+              className="shadow-lg rounded-2xl overflow-hidden hover:shadow-xl transition-shadow py-0"
             >
-              <div className="h-40 bg-gray-200 flex items-center justify-center text-gray-500">
-                Illustration
-              </div>
+              <img
+                src={cycle.img}
+                alt={cycle.name}
+                className="h-40 w-full object-cover"
+              />
               <CardHeader>
                 <CardTitle className="text-xl font-semibold text-center">
-                  {cycle}
+                  {cycle.name}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -203,29 +219,33 @@ const Apropos: React.FC = () => {
       <section>
         <h2 className="text-3xl font-bold text-center mb-8">Partenaires</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {["Entreprise A", "Université B", "Organisation C"].map(
-            (partner, idx) => (
-              <Card
-                key={idx}
-                className="shadow-lg rounded-2xl overflow-hidden hover:shadow-xl transition-shadow"
-              >
-                <div className="h-40 bg-gray-200 flex items-center justify-center text-gray-500">
-                  Logo
-                </div>
-                <CardHeader>
-                  <CardTitle className="text-xl font-semibold text-center">
-                    {partner}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 text-center">
-                    Collaboration stratégique avec {partner} pour renforcer
-                    l’apprentissage et les opportunités professionnelles.
-                  </p>
-                </CardContent>
-              </Card>
-            )
-          )}
+          {[
+            { name: "Université de Dschang", img: dschang },
+            { name: "Université  de Louvin", img: louvin },
+            { name: "Université libre de Bruxelles", img: bruxelles },
+          ].map((partner, idx) => (
+            <Card
+              key={idx}
+              className="shadow-lg rounded-2xl overflow-hidden hover:shadow-xl transition-shadow py-0"
+            >
+              <img
+                src={partner.img}
+                alt={partner.name}
+                className="h-40 w-full object-cover bg-white"
+              />
+              <CardHeader>
+                <CardTitle className="text-xl font-semibold text-center">
+                  {partner.name}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 text-center">
+                  Collaboration stratégique avec {partner.name} pour renforcer
+                  l’apprentissage et les opportunités professionnelles.
+                </p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </section>
 
@@ -236,17 +256,27 @@ const Apropos: React.FC = () => {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
-            { name: "Dr. Kouam", role: "Directeur" },
-            { name: "Mme. Njoya", role: "Responsable Pédagogique" },
-            { name: "M. Tchatchoua", role: "Coordonnateur" },
+            { name: "Mme. Kouam", role: "Directeur", img: staffKouam },
+            {
+              name: "Mr. Kouam Etienne",
+              role: "PDG",
+              img: staffNjoya,
+            },
+            {
+              name: "Mr. Binam Alphonse Donatien",
+              role: "Coordonnateur",
+              img: staffTchatchoua,
+            },
           ].map((staff, idx) => (
             <Card
               key={idx}
               className="shadow-lg rounded-2xl overflow-hidden hover:shadow-xl transition-shadow"
             >
-              <div className="h-40 bg-gray-200 flex items-center justify-center text-gray-500">
-                Photo
-              </div>
+              <img
+                src={staff.img}
+                alt={staff.name}
+                className="h-40 w-full object-cover"
+              />
               <CardHeader>
                 <CardTitle className="text-xl font-semibold text-center">
                   {staff.name}

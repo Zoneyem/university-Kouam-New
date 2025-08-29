@@ -8,7 +8,7 @@ type ContactFormInputs = {
   name: string;
   email: string;
   phone: string;
-  subject: string; // Filière - Parcours
+  subject: string;
   message: string;
 };
 
@@ -69,9 +69,8 @@ const ContactForm = () => {
     reset,
   } = useForm<ContactFormInputs>();
 
-  const formValues = watch(); // Watch all fields
+  const formValues = watch();
 
-  // Button is enabled only if all fields are filled & no errors
   const isFormValid =
     formValues.name?.trim() &&
     formValues.email?.trim() &&
@@ -85,8 +84,8 @@ const ContactForm = () => {
 
     try {
       await emailjs.send(
-        "service_qk9gqad", // Replace with your Service ID
-        "template_imi38aj", // Replace with your Template ID
+        "service_qk9gqad",
+        "template_imi38aj",
         {
           name: data.name,
           email: data.email,
@@ -96,7 +95,7 @@ const ContactForm = () => {
           parcours: parcours ?? "",
           message: data.message,
         },
-        "f2Bl4eR-rdXz8O_Ra" // Replace with your Public Key
+        "f2Bl4eR-rdXz8O_Ra"
       );
 
       reset();
@@ -118,16 +117,23 @@ const ContactForm = () => {
   return (
     <>
       <div className="max-w-3xl mx-auto px-6 py-12 bg-white rounded-2xl shadow-xl animate-slideUp">
-        <h2 className="text-3xl font-bold mb-8 text-center">Contactez-nous</h2>
+        <h2 className="text-3xl font-bold mb-4 text-center text-gray-800">
+          Contactez-nous
+        </h2>
+        <p className="text-center text-gray-600 mb-8">
+          Nous sommes à votre écoute pour toutes questions concernant nos
+          formations et inscriptions. Notre équipe pédagogique se fera un
+          plaisir de vous répondre rapidement.
+        </p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Nom */}
+          {/** Nom **/}
           <div className="relative">
             <input
               type="text"
               {...register("name", { required: "Le nom est requis" })}
               placeholder="Nom"
-              className={`peer w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary transition-all ${
+              className={`peer w-full border rounded-lg px-3 py-2 transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 ${
                 errors.name ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -136,7 +142,7 @@ const ContactForm = () => {
             )}
           </div>
 
-          {/* Email */}
+          {/** Email **/}
           <div className="relative">
             <input
               type="email"
@@ -145,7 +151,7 @@ const ContactForm = () => {
                 pattern: { value: /^\S+@\S+$/i, message: "Email invalide" },
               })}
               placeholder="Email"
-              className={`peer w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary transition-all ${
+              className={`peer w-full border rounded-lg px-3 py-2 transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 ${
                 errors.email ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -156,7 +162,7 @@ const ContactForm = () => {
             )}
           </div>
 
-          {/* Téléphone */}
+          {/** Téléphone **/}
           <div className="relative">
             <input
               type="tel"
@@ -168,7 +174,7 @@ const ContactForm = () => {
                 },
               })}
               placeholder="Numéro de téléphone"
-              className={`peer w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary transition-all ${
+              className={`peer w-full border rounded-lg px-3 py-2 transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 ${
                 errors.phone ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -179,14 +185,14 @@ const ContactForm = () => {
             )}
           </div>
 
-          {/* Sujet / Parcours */}
+          {/** Sujet / Parcours **/}
           <div className="relative">
-            <label className="block text-sm font-medium mb-1">
+            <label className="block text-sm font-medium mb-1 text-gray-700">
               Sujet / Parcours
             </label>
             <select
               {...register("subject", { required: "Le sujet est requis" })}
-              className={`w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary transition-all ${
+              className={`w-full border rounded-lg px-3 py-2 transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 ${
                 errors.subject ? "border-red-500" : "border-gray-300"
               }`}
               defaultValue=""
@@ -213,22 +219,20 @@ const ContactForm = () => {
                 {errors.subject.message}
               </p>
             )}
-
-            {/* Affichage dynamique du parcours choisi */}
             {formValues.subject && (
-              <p className="text-primary text-sm mt-1 animate-pulse">
+              <p className="text-blue-500 text-sm mt-1 animate-pulse">
                 Parcours sélectionné: {formValues.subject}
               </p>
             )}
           </div>
 
-          {/* Message */}
+          {/** Message **/}
           <div className="relative">
             <textarea
               rows={5}
               {...register("message", { required: "Le message est requis" })}
               placeholder="Message"
-              className={`w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none ${
+              className={`w-full border rounded-lg px-3 py-2 transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none ${
                 errors.message ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -239,14 +243,14 @@ const ContactForm = () => {
             )}
           </div>
 
-          {/* Bouton Submit */}
+          {/** Bouton Submit **/}
           <div className="text-center">
             <button
               type="submit"
               disabled={!isFormValid || isSubmitting}
               className={`px-8 py-3 rounded-full transition-transform duration-200 ${
                 isFormValid
-                  ? "bg-primary text-white hover:scale-105"
+                  ? "bg-blue-500 text-white hover:bg-blue-600 hover:scale-105"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
             >
@@ -256,7 +260,6 @@ const ContactForm = () => {
         </form>
       </div>
 
-      {/* Modal */}
       {modal && <Modal {...modal} />}
     </>
   );
