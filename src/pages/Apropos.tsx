@@ -130,7 +130,7 @@ const Apropos: React.FC = () => {
         {!isPlaying && (
           <div className="absolute inset-0 z-10 bg-black/40 flex flex-col justify-center items-center text-center px-6 space-y-4">
             <h1 className="text-4xl md:text-5xl font-bold text-white">
-              Bienvenue à l'ISSTEK
+              Bienvenue à l'ISSTEK test
             </h1>
             <p className="text-white text-lg md:text-xl max-w-2xl">
               Institut Supérieur des Sciences et Technologies Kouam – Excellence
