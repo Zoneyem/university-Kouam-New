@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import spotVideo from "../assets/videos/spot.mp4";
 
-// 🔹 Ajoute ici tes images locales
+// 🔹 Images locales
 import hnd from "../assets/images/hnd.jpeg";
 import licence from "../assets/images/licence.jpeg";
 import master from "../assets/images/master.jpeg";
@@ -9,11 +9,15 @@ import master from "../assets/images/master.jpeg";
 import louvin from "../assets/images/louvin.jpg";
 import dschang from "../assets/images/uni_dschang.jpg";
 import bruxelles from "../assets/images/uni-bruxelles.jpg";
+import uit from "../assets/images/uit.jpg";
+import ontario from "../assets/images/ontario.jpg";
+import ngaoundere from "../assets/images/ngaoundéré.jpg";
 
 import staffKouam from "../assets/images/kouam_mme.jpeg";
 import staffNjoya from "../assets/images/kouam_m.jpeg";
 import staffTchatchoua from "../assets/images/binam.jpeg";
 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -21,9 +25,12 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-// === CAROUSEL ===
+// Embla Autoplay
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
+
+// === CAROUSEL HERO ===
 const carouselItems = [
   {
     title: "Excellence Académique",
@@ -69,23 +76,74 @@ const Apropos: React.FC = () => {
       setIsPlaying(true);
     }
   };
-
   const handlePauseVideo = () => {
     if (videoRef.current) {
       videoRef.current.pause();
       setIsPlaying(false);
     }
   };
-
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const vol = parseFloat(e.target.value);
     setVolume(vol);
     if (videoRef.current) videoRef.current.volume = vol;
   };
 
+  // Carousel partenaires Embla
+  const [emblaRef] = useEmblaCarousel({ loop: true, skipSnaps: false }, [
+    Autoplay({ delay: 3000 }),
+  ]);
+
+  // Cycles de formation avec URLs
+  const cycles = [
+    { name: "HND / BTS", img: hnd, url: "/formations/hnd" },
+    { name: "Licence / Licence Pro", img: licence, url: "/formations/licence" },
+    { name: "Master / Master Pro", img: master, url: "/formations/master" },
+  ];
+
+  // Partenaires avec URLs
+  const partners = [
+    {
+      name: "Université de Dschang",
+      img: dschang,
+      url: "https://www.univ-dschang.org",
+    },
+    {
+      name: "Université de Louvin",
+      img: louvin,
+      url: "https://uclouvain.be",
+    },
+    {
+      name: "Université libre de Bruxelles",
+      img: bruxelles,
+      url: "https://www.ulb.be",
+    },
+    {
+      name: "Université de Ngaoundéré",
+      img: ngaoundere,
+      url: "https://www.una-edu.cm",
+    },
+    {
+      name: "Ontario Tech University",
+      img: ontario,
+      url: "https://ontariotechu.ca",
+    },
+    { name: "Institut universitaire de Technologies", img: uit, url: "/" },
+  ];
+
+  // Staff administratif
+  const staff = [
+    { name: "Mme. Kouam", role: "Directeur", img: staffKouam },
+    { name: "Mr. Kouam Etienne", role: "PDG", img: staffNjoya },
+    {
+      name: "Mr. Binam Alphonse Donatien",
+      role: "Coordonnateur",
+      img: staffTchatchoua,
+    },
+  ];
+
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-24">
-      {/* === CAROUSEL === */}
+      {/* === CAROUSEL HERO === */}
       <div className="relative w-full h-96 md:h-[500px] rounded-3xl overflow-hidden shadow-2xl mb-12">
         <Carousel className="h-full">
           <CarouselContent className="h-full flex">
@@ -110,7 +168,6 @@ const Apropos: React.FC = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-
           <CarouselPrevious className="absolute top-1/2 left-4 -translate-y-1/2 bg-yellow-500 rounded-full p-2 shadow-lg hover:bg-yellow-600" />
           <CarouselNext className="absolute top-1/2 right-4 -translate-y-1/2 bg-yellow-500 rounded-full p-2 shadow-lg hover:bg-yellow-600" />
         </Carousel>
@@ -130,7 +187,7 @@ const Apropos: React.FC = () => {
         {!isPlaying && (
           <div className="absolute inset-0 z-10 bg-black/40 flex flex-col justify-center items-center text-center px-6 space-y-4">
             <h1 className="text-4xl md:text-5xl font-bold text-white">
-              Bienvenue à l'ISSTEK test
+              Bienvenue à l'ISSTEK
             </h1>
             <p className="text-white text-lg md:text-xl max-w-2xl">
               Institut Supérieur des Sciences et Technologies Kouam – Excellence
@@ -184,33 +241,34 @@ const Apropos: React.FC = () => {
         <h2 className="text-3xl font-bold text-center mb-8">
           Cycles de Formations
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            { name: "HND / BTS", img: hnd },
-            { name: "Licence / Licence Pro", img: licence },
-            { name: "Master / Master Pro", img: master },
-          ].map((cycle, idx) => (
-            <Card
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          {cycles.map((cycle, idx) => (
+            <a
               key={idx}
-              className="shadow-lg rounded-2xl overflow-hidden hover:shadow-xl transition-shadow py-0"
+              href={cycle.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block hover:no-underline"
             >
-              <img
-                src={cycle.img}
-                alt={cycle.name}
-                className="h-40 w-full object-cover"
-              />
-              <CardHeader>
-                <CardTitle className="text-xl font-semibold text-center">
-                  {cycle.name}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600 text-center">
-                  Programmes académiques orientés vers la pratique et la
-                  recherche pour une meilleure insertion professionnelle.
-                </p>
-              </CardContent>
-            </Card>
+              <Card className="shadow-lg rounded-2xl overflow-hidden hover:shadow-xl transition-transform hover:scale-105 min-h-[600px] py-0">
+                <img
+                  src={cycle.img}
+                  alt={cycle.name}
+                  className="h-full w-full object-cover"
+                />
+                <CardHeader>
+                  <CardTitle className="text-2xl font-semibold text-center">
+                    {cycle.name}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600 text-center text-lg">
+                    Programmes académiques orientés vers la pratique et la
+                    recherche pour une meilleure insertion professionnelle.
+                  </p>
+                </CardContent>
+              </Card>
+            </a>
           ))}
         </div>
       </section>
@@ -218,34 +276,39 @@ const Apropos: React.FC = () => {
       {/* === PARTENAIRES === */}
       <section>
         <h2 className="text-3xl font-bold text-center mb-8">Partenaires</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            { name: "Université de Dschang", img: dschang },
-            { name: "Université  de Louvin", img: louvin },
-            { name: "Université libre de Bruxelles", img: bruxelles },
-          ].map((partner, idx) => (
-            <Card
-              key={idx}
-              className="shadow-lg rounded-2xl overflow-hidden hover:shadow-xl transition-shadow py-0"
-            >
-              <img
-                src={partner.img}
-                alt={partner.name}
-                className="h-40 w-full object-cover bg-white"
-              />
-              <CardHeader>
-                <CardTitle className="text-xl font-semibold text-center">
-                  {partner.name}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600 text-center">
-                  Collaboration stratégique avec {partner.name} pour renforcer
-                  l’apprentissage et les opportunités professionnelles.
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+        <div className="overflow-hidden" ref={emblaRef}>
+          <div className="flex gap-6">
+            {partners.map((partner, idx) => (
+              <div key={idx} className="flex-[0_0_33%] p-4">
+                <a
+                  href={partner.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block hover:no-underline"
+                >
+                  <Card className="h-[650px] py-0 w-full shadow-lg rounded-2xl overflow-hidden hover:shadow-xl transition-transform hover:scale-105">
+                    <img
+                      src={partner.img}
+                      alt={partner.name}
+                      className="h-[400px] w-full object-cover"
+                    />
+                    <CardHeader>
+                      <CardTitle className="text-xl font-semibold text-center">
+                        {partner.name}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-600 text-center">
+                        Collaboration stratégique avec {partner.name} pour
+                        renforcer l’apprentissage et les opportunités
+                        professionnelles.
+                      </p>
+                    </CardContent>
+                  </Card>
+                </a>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -254,36 +317,24 @@ const Apropos: React.FC = () => {
         <h2 className="text-3xl font-bold text-center mb-8">
           Staff Administratif
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            { name: "Mme. Kouam", role: "Directeur", img: staffKouam },
-            {
-              name: "Mr. Kouam Etienne",
-              role: "PDG",
-              img: staffNjoya,
-            },
-            {
-              name: "Mr. Binam Alphonse Donatien",
-              role: "Coordonnateur",
-              img: staffTchatchoua,
-            },
-          ].map((staff, idx) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          {staff.map((s, idx) => (
             <Card
               key={idx}
-              className="shadow-lg rounded-2xl overflow-hidden hover:shadow-xl transition-shadow"
+              className="shadow-lg rounded-2xl overflow-hidden hover:shadow-xl transition-transform hover:scale-105 min-h-[650px] py-0"
             >
               <img
-                src={staff.img}
-                alt={staff.name}
-                className="h-40 w-full object-cover"
+                src={s.img}
+                alt={s.name}
+                className="h-[400px] w-full object-cover"
               />
               <CardHeader>
-                <CardTitle className="text-xl font-semibold text-center">
-                  {staff.name}
+                <CardTitle className="text-2xl font-semibold text-center">
+                  {s.name}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 text-center">{staff.role}</p>
+                <p className="text-gray-600 text-center text-lg">{s.role}</p>
               </CardContent>
             </Card>
           ))}
